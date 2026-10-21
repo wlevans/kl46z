@@ -1,0 +1,13 @@
+# Makefile generated outputs.
+*.d
+*.o
+*.map
+*.elf
+*.bin
+*.srec
+
+# Eclipse files and directories.
+.metadata
+.settings/
+.cproject
+.project

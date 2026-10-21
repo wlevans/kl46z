@@ -3,7 +3,7 @@
 
 void delay(void);
 
-void main(void)
+int main(void)
 {
   *((uint32_t *)0x40048038) |= (1 << 13);
   *((uint32_t *)0x4004D074) |= (1 <<  8);

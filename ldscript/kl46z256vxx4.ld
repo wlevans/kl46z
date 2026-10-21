@@ -4,7 +4,7 @@
 */
 
 /* Entry point. */
-ENTRY(Reset_Handler);
+ENTRY(_reset);
 
 MEMORY {
   flash(rx)  : ORIGIN = 0x00000000, LENGTH = 0x00040000 /* 256 k */
