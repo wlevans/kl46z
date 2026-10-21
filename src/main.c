@@ -1,6 +1,8 @@
 #include <stdint.h>
 #include "gpio.h"
 
+#define DELAY_COUNT 1000000
+
 void delay(void);
 
 int main(void)
@@ -26,7 +28,7 @@ int main(void)
 void delay(void)
 {
   uint32_t i;
-  for(i = 0; i < 1000000; ++i)
+  for(i = 0; i < DELAY_COUNT; ++i)
     {
       __asm__("nop");
     }
