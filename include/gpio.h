@@ -1,13 +1,13 @@
 #include <stdint.h>
 
-typedef struct
+typedef volatile struct
 {
-        volatile uint32_t PDOR;
-        volatile uint32_t PSOR;
-        volatile uint32_t PCOR;
-        volatile uint32_t PTOR;
-  const volatile uint32_t PDIR;
-        volatile uint32_t PDDR;
+        uint32_t PDOR;
+        uint32_t PSOR;
+        uint32_t PCOR;
+        uint32_t PTOR;
+  const uint32_t PDIR;
+        uint32_t PDDR;
 } gpio_t;
 
 #define GPIOA ((gpio_t *)0x400FF000)
