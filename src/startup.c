@@ -3,8 +3,11 @@
 // Forward define main.
 int main(void);
 
+// Reset Handler prototype.
+__attribute__((naked, noreturn)) void Reset_Handler(void);
+
 // Startup code.
-static __attribute__((naked, noreturn)) void _reset(void)
+void Reset_Handler(void)
 {
   // Get section start and end points from linker directive.
   extern uint32_t _sbss;
@@ -37,5 +40,5 @@ extern void _estack(void);
 // 16 standard plus 33 KL46Z specific handlers.
 __attribute__((section(".vectors"))) void (*const tab[16 + 33])(void) =
 {
-  _estack, _reset
+  _estack, Reset_Handler
 };
