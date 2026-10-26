@@ -126,7 +126,8 @@ clobber : clean
 
 # Flash device.
 flash : $(BINARY).bin
-	cp $(BINARY).bin /media/willy/FRDM-KL46Z && sync
+	if [ -d "/media/willy/FRDM-KL46Z" ]; then cp $(BINARY).bin /media/willy/FRDM-KL46Z && sync; \
+	else echo "The directory '/media/willy/FRDM-KL46Z' does not exist."; fi
 
 .PHONY : clean elf bin hex srec list all
 
