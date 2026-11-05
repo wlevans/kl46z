@@ -1,23 +1,41 @@
 # Makefile
 
+# Get user name.
+USER = $(shell whoami)
+
 # Include compiler tools.
 include arm-none-eabi.mk
 
+# Project paths.
+LINKERSCRIPT := ldscript
+SRC_DIR      := src
+INCLUDE_DIR  := include
+BUILD_DIR    := build
+BIN_DIR      := bin
+
 # Output file name.
-BINARY = blinky
+TARGET = $(BIN_DIR)/blinky
+
+# Component subdirectories.
+PARTS_DIR  = $(SRC_DIR)/bsp
+PARTS_DIR += $(SRC_DIR)/FreeRTOS
 
 # Include path(s).
-LINKERSCRIPT := ldscript
-SRC          := src
+INCLUDES  = -I$(INCLUDE_DIR)
+INCLUDES += -I$(SRC_DIR)/bsp
+INCLUDES += -I$(SRC_DOR)/FreeRTOS
 
-# Source files.
-SRCFILES  = ${SRC}/startup.c
-SRCFILES += ${SRC}/main.c
+# Find all .c files.
+SOURCES := $(shell find $(SRC_DIR) $(PART_DIR) -name '*.c')
 
-# Object file(s) to build.
-TEMP1 = $(patsubst %.c,%.o,$(SRCFILES))
-TEMP2 = $(patsubst %.cpp,%.o,$(TEMP1))
-OBJS  = $(patsubst %.asm,%.o,$(TEMP2))
+# Generate object file paths.
+OBJECTS := $(patsubst $(SRC_DIR)/%.c, $(BUILD_DIR)/%.o, $(SOURCES))
+
+# Auto-generated dependency files.
+DEPS := $(OBJECTS:.o=.d)
+
+# Phony targets.
+.PHONY : all clean clobber flash
 
 # Define linker script.
 LDSCRIPT = $(LINKERSCRIPT)/kl46z256vxx4.ld
@@ -52,7 +70,8 @@ TGT_CXXFLAGS += $(ARCH_FLAGS)
 TGT_CXXFLAGS +=  -Weffc++
 
 # C/C++ preprocessor common flags.
-TGT_CPPFLAGS += -MD
+TGT_CPPFLAGS += -MMD
+TGT_CPPFLAGS += -MP
 TGT_CPPFLAGS += -Wall
 TGT_CPPFLAGS += -Wundef
 TGT_CPPFLAGS += -fno-common
@@ -79,57 +98,36 @@ TGT_LDFLAGS += -Wl,--gc-sections
 LDLIBS += -specs=nosys.specs
 LDLIBS += -Wl,--start-group -lc -lgcc -lnosys -Wl,--end-group
 
-.SUFFIXES: .elf .bin .hex .srec .list .map
+.SUFFIXES: .elf .bin .map
 .SECONDEXPANSION:
 .SECONDARY:
 
 all : elf
-elf  : $(BINARY).elf
-bin  : $(BINARY).bin
-hex  : $(BINARY).hex
-srec : $(BINARY).srec
-list : $(BINARY).list
+elf : $(TARGET).elf
+bin : $(TARGET).bin
 
-%.bin : %.elf
-	$(OBJCOPY) -O binary $(*).elf $(*).bin
+$(TARGET).bin : $(TARGET).elf
+	$(OBJCOPY) -Obinary $(*).elf $(*).bin
 
-%.hex : %.elf
-	$(OBJCOPY) -O ihex $(*).elf $(*).hex
+$(TARGET).elf : $(OBJECTS) $(LDSCRIPT)
+	@mkdir -p $(BIN_DIR)
+	$(CC) $(TGT_LDFLAGS) $(LDFLAGS) $(OBJECTS) $(LDLIBS) -o $(TARGET).elf
+	$(SIZE) $(TARGET).elf
 
-%.srec : %.elf
-	$(OBJCOPY) -O srec $(*).elf $(*).srec
-
-%.list : %.elf
-	$(OBJCOPY) -S $(*).elf $(*).list
-
-%.elf %.map : $(OBJS) $(LDSCRIPT)
-	$(CC) $(TGT_LDFLAGS) $(LDFLAGS) $(OBJS) $(LDLIBS) -o $(*).elf
-	$(SIZE) $(BINARY).elf
-
-%.o : %.c
-	$(CC) $(TGT_CFLAGS) $(CFLAGS) $(TGT_CPPFLAGS) $(CPPFLAGS) -o $(*).o -c $(*).c
-
-%.o : %.cxx
-	$(CXX) $(TGT_CXXFLAGS) $(CXXFLAGS) $(TGT_CPPFLAGS) $(CPPFLAGS) -o $(*).o -c $(*).cxx
-
-%.o : %.cpp
-	$(CXX) $(TGT_CXXFLAGS) $(CXXFLAGS) $(TGT_CPPFLAGS) $(CPPFLAGS) -o $(*).o -c $(*).cpp
-
-%.o : %.asm
-	$(AS) $(ASFLAGS) -o $*.o -c $<
+$(BUILD_DIR)/%.o : $(SRC_DIR)/%.c
+	@mkdir -p $(@D)
+	$(CC) $(TGT_CFLAGS) $(CFLAGS) $(TGT_CPPFLAGS) $(CPPFLAGS) $(INCLUDES) -c $< -o $@
 
 clean :
-	$(RM) *.o *.d generated.* $(OBJS) $(patsubst %.o,%.d,$(OBJS))
+	@rm -rf $(BUILD_DIR)
 
 clobber : clean
-	$(RM) -f *.elf *.bin *.hex *srec *.list *.map
+	@rm -rf $(BIN_DIR)
 
 # Flash device.
-flash : $(BINARY).bin
-	if [ -d "/media/willy/FRDM-KL46Z" ]; then cp $(BINARY).bin /media/willy/FRDM-KL46Z && sync; \
-	else echo "The directory '/media/willy/FRDM-KL46Z' does not exist."; fi
-
-.PHONY : clean elf bin hex srec list all
+flash : $(TARGET).bin
+	@if [ -d "/media/$(USER)/FRDM-KL46Z" ]; then cp $(TARGET).bin /media/$(USER)/FRDM-KL46Z && sync; \
+	else echo "The directory '/media/$(USER)/FRDM-KL46Z' does not exist."; fi
 
 # What does this do?
--include $(OBJS:.o=.d)
+-include $(DEPS)
