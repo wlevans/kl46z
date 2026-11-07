@@ -17,13 +17,13 @@ BIN_DIR      := bin
 TARGET = $(BIN_DIR)/blinky
 
 # Component subdirectories.
-PARTS_DIR  = $(SRC_DIR)/bsp
-PARTS_DIR += $(SRC_DIR)/FreeRTOS
+PARTS_DIR  = $(SRC_DIR)/drivers
+PARTS_DIR += $(SRC_DIR)/bsp
 
 # Include path(s).
 INCLUDES  = -I$(INCLUDE_DIR)
 INCLUDES += -I$(SRC_DIR)/bsp
-INCLUDES += -I$(SRC_DOR)/FreeRTOS
+INCLUDES += -I$(SRC_DIR)/drivers
 
 # Find all .c files.
 SOURCES := $(shell find $(SRC_DIR) $(PART_DIR) -name '*.c')
