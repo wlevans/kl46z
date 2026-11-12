@@ -8,10 +8,10 @@ extern "C"
 
 #include "../drivers/gpio.h"
 
-#define LED_RED_GPIO_PORT    GPIOD
-#define LED_RED_PIN_MASK     1 << 5
-#define LED_GREEN_GPIO_PORT  GPIOE
-#define LED_GREEN_PIN_MASK   1 << 29
+#define LED_RED_GPIO_PORT    GPIOE
+#define LED_RED_PIN_MASK     1 << 29
+#define LED_GREEN_GPIO_PORT  GPIOD
+#define LED_GREEN_PIN_MASK   1 <<  5
 
 // GPIO operational modes.
 typedef enum

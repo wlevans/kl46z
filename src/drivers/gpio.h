@@ -1,14 +1,12 @@
 #ifndef __KL46Z_GPIO__
 #define __KL46Z_GPIO__
 
-#include <stdint.h>
+#ifdef __cplusplus
+extern "C"
+{
+#endif
 
-// General Purpose Input/Output Ports base addresses.
-#define GPIOA ((gpio_t *)0x400FF000)
-#define GPIOB ((gpio_t *)0x400FF040)
-#define GPIOC ((gpio_t *)0x400FF080)
-#define GPIOD ((gpio_t *)0x400FF0C0)
-#define GPIOE ((gpio_t *)0x400FF100)
+#include <stdint.h>
 
 // GPIO ports register definition.
 typedef volatile struct
@@ -21,10 +19,12 @@ typedef volatile struct
         uint32_t PDDR;  // Port Data Direction Register
 } gpio_t;
 
-#ifdef __cplusplus
-extern "C"
-{
-#endif
+// General Purpose Input/Output Ports base addresses.
+#define GPIOA ((gpio_t * const)0x400FF000)
+#define GPIOB ((gpio_t * const)0x400FF040)
+#define GPIOC ((gpio_t * const)0x400FF080)
+#define GPIOD ((gpio_t * const)0x400FF0C0)
+#define GPIOE ((gpio_t * const)0x400FF100)
 
 // GPIO operational modes.
 typedef enum
