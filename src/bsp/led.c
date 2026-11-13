@@ -29,6 +29,7 @@ void led_init(led_t led)
 
 	gpio_set_mode(leds[led].gpio_port, leds[led].pin_mask, GPIO_MODE_OUTPUT);
 	gpio_output_clear(leds[led].gpio_port, leds[led].pin_mask);
+    gpio_output_set(leds[led].gpio_port, leds[led].pin_mask);
 	return;
 }
 
@@ -37,7 +38,7 @@ void led_on(led_t led)
 	assert(led < LED_COUNT);
 	assert(NULL != &leds[led]);
 
-	gpio_output_set(leds[led].gpio_port, leds[led].pin_mask);
+	gpio_output_clear(leds[led].gpio_port, leds[led].pin_mask);
 	return;
 }
 
@@ -46,7 +47,7 @@ void led_off(led_t led)
 	assert(led < LED_COUNT);
 	assert(NULL != &leds[led]);
 
-	gpio_output_clear(leds[led].gpio_port, leds[led].pin_mask);
+	gpio_output_set(leds[led].gpio_port, leds[led].pin_mask);
 	return;
 }
 
