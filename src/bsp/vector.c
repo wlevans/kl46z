@@ -1,27 +1,61 @@
 #include "vector.h"
+#include "frdm_kl46z.h"
 #include <stdint.h>
 
 extern void _estack(void);
 
-// 16 standard plus 32 KL46Z specific handlers.
-__attribute__((section(".vectors"))) void (*const tab[16 + 32])(void) =
+// 1 stack pointer + 16 standard plus 32 KL46Z specific handlers.
+__attribute__((section(".vectors"))) void (*const tab[1 + 16 + 32])(void) =
 {
   _estack,
   Reset_Handler,
-  0,
-  0,
-  0,
-  0,
-  0,
-  0,
-  0,
-  0,
-  0,
-  0,
-  0,
-  0,
-  0,
-  SysTick_Handler
+  Default_Handler,
+  Default_Handler,
+  Default_Handler,
+  Default_Handler,
+  Default_Handler,
+  Default_Handler,
+  Default_Handler,
+  Default_Handler,
+  Default_Handler,
+  Default_Handler,
+  Default_Handler,
+  Default_Handler,
+  Default_Handler,
+  SysTick_Handler,
+  Default_Handler,
+  Default_Handler,
+  Default_Handler,
+  Default_Handler,
+  Default_Handler,
+  Default_Handler,
+  Default_Handler,
+  Default_Handler,
+  Default_Handler,
+  Default_Handler,
+  Default_Handler,
+  Default_Handler,
+  Default_Handler,
+  Default_Handler,
+  Default_Handler,
+  Default_Handler,
+  Default_Handler,
+  Default_Handler,
+  Default_Handler,
+  Default_Handler,
+  Default_Handler,
+  Default_Handler,
+  Default_Handler,
+  Default_Handler,
+  Default_Handler,
+  Default_Handler,
+  Default_Handler,
+  Default_Handler,
+  Default_Handler,
+  Default_Handler,
+  Default_Handler,
+  Default_Handler,
+  Default_Handler
 };
 
 // System default handler.
@@ -50,6 +84,9 @@ void Reset_Handler(void)
   {
     *dst++ = *src++;
   }
+
+  board_init();
+
   // Call main.
   main();
   // Infinite loop in the case if main() returns

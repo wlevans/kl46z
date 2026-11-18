@@ -1,3 +1,8 @@
+#include <stdint.h>
+
+// Forward define main.
+int main(void);
+
 // System default handler.
 void Default_Handler(void);
 

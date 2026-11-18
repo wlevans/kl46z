@@ -9,7 +9,7 @@ void delay(void);
 int main(void)
 {
 	// Initialize board.
-	board_init();
+//	board_init();
 
 	// Initialize LEDs.
 	led_init(LED_RED);
@@ -23,6 +23,9 @@ int main(void)
 		led_toggle(LED_RED);
 		led_toggle(LED_GREEN);
 	}
+
+	// Should never get here.
+	return 0;
 }
 
 void delay(void)
