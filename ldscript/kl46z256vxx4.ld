@@ -8,7 +8,7 @@ ENTRY(Reset_Handler);
 
 MEMORY {
   irq(rx)    : ORIGIN = 0x00000000, LENGTH = 0x00000100 /* 256 */
-  flash(rx)  : ORIGIN = 0x00000410, LENGTH = 0x0003FBF0 /* 256 k - 1040*/
+  flash(rx)  : ORIGIN = 0x00000410, LENGTH = 0x0003FBF0 /* 256 k - 1040 */
   sram(rwx)  : ORIGIN = 0x1FFFE000, LENGTH = 0x00008000 /*  32 k */
 }
 
