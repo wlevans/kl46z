@@ -7,6 +7,7 @@
 uint32_t systick_count = 0;
 
 void delay(uint32_t count);
+void SysTick_Handler(void);
 
 int main(void)
 {
