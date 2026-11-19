@@ -85,6 +85,7 @@ void Reset_Handler(void)
     *dst++ = *src++;
   }
 
+  // Initialize board.
   board_init();
 
   // Call main.

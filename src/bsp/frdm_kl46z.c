@@ -5,6 +5,10 @@ void board_init(void)
 	// Disable COP watchdog.
 	*((uint32_t *)0x40048100) &= ~(0x0C);
 
+	// Set divide value for core/system clock to 1.
+	// Set divide value for bus and flash clock to 2.
+	*((uint32_t *)0x40048044) = 0x00010000;
+
 	// Transition from FEI to FBE.
 
 	// High frequency range.
@@ -37,7 +41,7 @@ void board_init(void)
 	// Transition from PBE to PEE.
 	// Select PLL as the system clock.
 	MCG->C1 = 0x18;
-	// Loop until PLL outpus is selected to feed MCGOUTCLK.
+	// Loop until PLL output is selected to feed MCGOUTCLK.
 	while(!(MCG->S & 0x0C));
 
 	return;
