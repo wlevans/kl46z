@@ -28,6 +28,7 @@ typedef volatile struct
         uint8_t C10;
 } mcg_t;
 
+// Multipurpose Clock Generator base address.
 #define MCG ((mcg_t * const)0x40064000)
 
 #ifdef __cplusplus

@@ -1,6 +1,6 @@
 #include <frdm_kl46z.h>
 #include <stdint.h>
-#include "bsp/led.h"
+#include "led.h"
 #include "systick.h"
 #include <stdbool.h>
 

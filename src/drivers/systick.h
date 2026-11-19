@@ -15,6 +15,8 @@ typedef volatile struct
         uint32_t SYST_CVR;    // Current Value Register.
   const uint32_t SYST_CALIB;  // Calibration Value Register.
 } systick_t;
+
+// System Tick base address.
 #define SYSTICK ((systick_t * const)0xE000E010)
 
 void systick_init(uint32_t ticks);
