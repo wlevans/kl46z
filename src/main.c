@@ -4,7 +4,7 @@
 #include "systick.h"
 #include <stdbool.h>
 
-uint32_t systick_count = 0;
+uint32_t systick_count;
 
 void delay(uint32_t count);
 void SysTick_Handler(void);

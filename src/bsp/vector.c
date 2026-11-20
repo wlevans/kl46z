@@ -5,7 +5,7 @@
 extern void _estack(void);
 
 // 1 stack pointer + 16 standard plus 32 KL46Z specific handlers.
-__attribute__((section(".vectors"))) void (*const tab[1 + 16 + 32])(void) =
+void (*const tab[1 + 16 + 32])(void) __attribute__((section(".vectors"))) =
 {
   _estack,
   Reset_Handler,
